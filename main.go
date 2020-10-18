@@ -129,14 +129,13 @@ func (s *logistic_regression) Done() (string, error) {
 		for i, x := range s.X {
 			t := mat.NewVecDense(x.Len(), nil)
 			t.CopyVec(x)
-			pred := softmax(t, w)
-			perr := y.AtVec(i) - pred
+			pred := softmax(w, x)
+			perr := y.At(i, 0) - pred
 			scale := s.cfg.Rate * perr * pred * (1 - pred)
-
+			dx := mat.NewVecDense(x.Len(), nil)
+			dx.CopyVec(x)
+			dx.ScaleVec(scale, x)
 			for j := 0; j < x.Len(); j++ {
-				dx := mat.NewVecDense(x.Len(), nil)
-				dx.CopyVec(x)
-				dx.ScaleVec(scale, x)
 				w.AddVec(w, dx)
 			}
 		}
