@@ -1,4 +1,5 @@
-CREATE DATABASE IF NOT EXISTS iris;
+.open iris.sqlite
+ATTACH DATABASE 'iris.sqlite' AS IRIS;
 DROP TABLE IF EXISTS iris.train;
 CREATE TABLE iris.train (
        sepal_length float,
